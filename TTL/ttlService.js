@@ -1,20 +1,22 @@
 import { redisClient } from './redisClient.js';
 
+function user(userId){
+   return `otp:Yash${userId}`
+}
+
 //getOTP
 const getOTP = async (userID) => {
-    const key = `otp:${userID}`;
+   const key = user(userID);
     
     return await redisClient.get(key);
 };
 
-// function userID(userId){
-//    return `otp:${userID}`
-// }
+
 
 // Store otp
 
 const saveOtp = async (userID, OTP) => {
-    const key = `otp:${userID}`;
+    const key = user(userID);
     await redisClient.set(key, OTP, {
         EX: 15
     });
@@ -24,7 +26,7 @@ const saveOtp = async (userID, OTP) => {
 // get otp expiry time
 
 const getOTPExpiry = async (userID) => {
-    const key = `otp:${userID}`;
+   const key = user(userID);
 
     return await redisClient.ttl(key);
     
